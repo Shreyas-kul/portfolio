@@ -28,13 +28,12 @@ Name: Shreyas Kulkarni.
 Role: AI/ML Engineer. 
 Email: shrkul@gmail.com. 
 Phone: +91 9380489018. 
-Objective: AI/ML Engineer with a strong foundation in Python, Transformers, and LLM fine-tuning, combined with experience in distributed cloud automation using Azure Logic Apps, Service Bus, and Power Automate. Adept at designing scalable AI architectures with RAG, LangChain, and Vector Databases. Passionate about building next-gen Agentic AI systems and enterprise automation pipelines. Achieved 95% AI automation efficiency across projects. 
-Education: Bachelor of Engineering in AI/ML from B.M.S College of Engineering, Dec 2021 to June 2025. 
-Experience 1: Software Development Engineer at sa.global Labs from Dec 2025 to Present. Built cutting-edge AI systems, Agent-to-Agent (A2A) communication systems, MCP-based architectures, and AI backends using MongoDB and Neo4j. 
-Experience 2: Azure AI Intern at sa.global from Mar 2025 to Sept 2025. Built an Agentic AI system for employee feedback using Microsoft Copilot Studio, Azure Logic Apps, increasing automation by 92%. 
-Projects: Employee Feedback Assistant (May 2025 to Jul 2025), Doc-U-Chat using LangChain RAG with Qdrant Vector DB (May 2024 to Jun 2024), Sales & Marketing Automation with predictive ML pipelines using Logic Apps (Aug 2025 to Oct 2025). 
-Skills: Python, C, SQL, Azure Platform, AWS, Vector DBs, Qdrant, PostgreSQL, MongoDB, Neo4j, Azure AI Studio, OpenAI, PyTorch, Transformers, LangChain, AutoGen v2. 
-Certifications: Azure AI Engineer Associate, Azure Fundamentals AZ-900, Generative AI with LLMs, IBM Data Science Professional.
+Objective: AI/ML Engineer specializing in scalable LLM-based systems, agentic architectures, and distributed systems. Experienced in building production-grade AI platforms, retrieval systems, and intelligent automation solutions for enterprise applications.
+Education: B.E. in AI/ML from B.M.S College of Engineering, Dec 2021 to June 2025. 
+Experience: Software Engineer — Azure AI Intern at sa.global / sa.global Labs from Mar 2025 to Present. Contributed to enterprise AI products (Evergreen, Empower, Elevate) built on Azure and Dynamics 365. Architected agentic AI systems and distributed LLM pipelines. Built backend systems using Python, async microservices, and event-driven architectures. Developed hybrid retrieval systems using Neo4j and vector databases. Improved workflow efficiency by 92% and analytical accuracy by 88%.
+Projects: sa.global chAIn (March 2026 to Present) - Production-grade AI platform using LLMs, RAG, and multi-agent systems for enterprise knowledge discovery. Feedback Neural Network (May 2025 to Jul 2025) - Multi-agent AI system for end-to-end employee feedback automation, reduced manual effort by 95%. D-BUG (Jan 2026 to March 2026) - Autonomous code reliability agent using LLM-based reasoning and adversarial testing. Doc-U-Chat (May 2024 to Jun 2024) - Scalable RAG chatbot using LangChain, Llama 3 70B, and Qdrant with 98% retrieval accuracy. Sales & Marketing Automation (Aug 2025 to Oct 2025) - Predictive ML pipelines with 90% accurate churn predictions. Employee Feedback Assistant (May 2025 to Jul 2025) - Automated HR workflows using Copilot Studio, 95% reduction in manual workload.
+Skills: Languages: Python, SQL, C#, C++, Java. AI/ML: LLMs, Agentic AI, RAG, Transformers, LangChain, Fine-tuning, Embeddings. Systems: Distributed Systems, Microservices, REST APIs, Async Programming, Event-Driven Architecture. Data: MongoDB, Neo4j, PostgreSQL, FAISS, Qdrant. Cloud: Azure, AWS, GCP, Kubernetes, Docker, CI/CD. DevOps: Azure DevOps, GitHub Actions. Tools: Claude Code, OpenAI Codex, Cursor, LangGraph, AutoGen V2, CrewAI, Langfuse.
+Certifications: Microsoft Certified Azure AI Engineer Associate, Microsoft Certified Azure Fundamentals (AZ-900), Generative AI with LLMs from DeepLearning.AI, IBM Data Science Professional Certificate.
 """
 
 SYSTEM_PROMPT = f"""
