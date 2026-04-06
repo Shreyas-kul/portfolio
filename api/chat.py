@@ -1,28 +1,9 @@
+import json
 import os
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from dotenv import load_dotenv
+from http.server import BaseHTTPRequestHandler
 from groq import Groq
 
-# Load environment variables
-load_dotenv()
 
-app = FastAPI()
-
-# Allow frontend to access the backend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-class ChatRequest(BaseModel):
-    query: str
-
-# Resume Context - Pass the whole resume to Groq. Fits easily in LLaMa 3 8k context window.
 RESUME_CONTEXT = """
 Name: Shreyas Kulkarni. 
 Role: AI/ML Engineer. 
@@ -46,45 +27,60 @@ Context:
 {RESUME_CONTEXT}
 """
 
-@app.get("/")
-def read_root():
-    return {"status": "Groq Lightweight Backend is running"}
 
-@app.post("/chat")
-@app.post("/api/chat")
-def chat(request: ChatRequest):
-    api_key = os.getenv("GROQ_API_KEY")
-    if not api_key:
-        raise HTTPException(status_code=500, detail="GROQ_API_KEY environment variable is not set in backend/.env")
-    
-    try:
-        # Direct generation via the official Groq SDK avoiding Langchain version conflicts
-        client = Groq(api_key=api_key)
-        
-        completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "system",
-                    "content": SYSTEM_PROMPT
-                },
-                {
-                    "role": "user",
-                    "content": request.query
-                }
-            ],
-            model="llama-3.3-70b-versatile",
-            temperature=0
-        )
-        
-        answer = completion.choices[0].message.content
-        
-        # Determine metadata label based on if fallback flag was tripped
-        is_fallback = "I couldn't find this" in answer
-        
-        return {
-            "answer": answer,
-            "source": "External API" if is_fallback else "Local Vector DB"
-        }
-    except Exception as e:
-        print(f"Error during Groq generation: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+class handler(BaseHTTPRequestHandler):
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
+
+    def do_POST(self):
+        try:
+            content_length = int(self.headers.get("Content-Length", 0))
+            body = json.loads(self.rfile.read(content_length))
+            query = body.get("query", "")
+
+            if not query:
+                self._send_error(400, "Query is required")
+                return
+
+            api_key = os.environ.get("GROQ_API_KEY")
+            if not api_key:
+                self._send_error(500, "GROQ_API_KEY is not configured")
+                return
+
+            client = Groq(api_key=api_key)
+            completion = client.chat.completions.create(
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": query},
+                ],
+                model="llama-3.3-70b-versatile",
+                temperature=0,
+            )
+
+            answer = completion.choices[0].message.content
+            is_fallback = "I couldn't find this" in answer
+
+            result = {
+                "answer": answer,
+                "source": "External API" if is_fallback else "Local Vector DB",
+            }
+
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps(result).encode())
+
+        except Exception as e:
+            self._send_error(500, str(e))
+
+    def _send_error(self, code, message):
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(json.dumps({"detail": message}).encode())
